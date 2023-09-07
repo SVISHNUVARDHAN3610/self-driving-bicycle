@@ -37,8 +37,9 @@ class Agent:
         return action
     def q_value(self,state,action):
         image, data = state
+        image = np.float32(image)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        image = image.reshape(3,240,240)
+        image = image.reshape(3,512,450)
         image = torch.tensor(image,dtype= torch.float32).to(self.device)
         data  = torch.tensor(data,dtype = torch.float32).to(self.device)
         state = [image,data]
