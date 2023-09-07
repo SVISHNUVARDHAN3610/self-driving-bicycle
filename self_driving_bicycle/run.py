@@ -12,4 +12,4 @@ if __name__ == "__main__":
     agent = Agent(16,8,0.0009,0.0005,buffer)    
     agent.run(1000000,350)
     episodes = "1M"
-    batch_size = "350"
+    batch_size = "100"
