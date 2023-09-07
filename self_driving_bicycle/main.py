@@ -27,8 +27,9 @@ class Agent:
         self.critic_optim = optim.Adam(self.critic.parameters() ,lr = self.lr2)
     def choose_action(self,state):
         image, data = state
+        image = np.float32(image)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
-        image = image.reshape(3,240,240)
+        image = image.reshape(3,512,450)
         image = torch.tensor(image,dtype= torch.float32).to(self.device)
         data  = torch.tensor(data,dtype = torch.float32).to(self.device)  
         action =self.actor([image, data])
