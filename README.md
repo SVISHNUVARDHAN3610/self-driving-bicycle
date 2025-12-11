@@ -265,11 +265,11 @@ We evaluated the agent's performance over **1,000,000 training episodes**. The r
       <em>The Multi-Modal Network fusing CNN (Visual) and MLP (Sensor) streams.</em>
     </td>
     <td valign="top" align="center">
-      <a href="assets/training_demo.mp4">
-        <img src="Img-src/video_20230205_142507.mp4" alt="Click to Watch Video" width="100%">
+      <a href="[YOUR_GOOGLE_DRIVE_LINK_HERE](https://drive.google.com/file/d/1gFfNRBSM2ZyNYWXj8PmKpEVsemeLBUuj/view?usp=sharing)" target="_blank">
+        <img src="Img-src/self-driving-motorcycle.png" alt="Watch on Google Drive" width="100%">
       </a>
-      <br>
-      <em>Click the image above to watch the 21MB MP4 training demo.</em>
+      <br><br>
+      <em>⚠️ High-Quality Video (21MB)<br>Click the image above to watch the full training session on Google Drive.</em>
     </td>
   </tr>
 </table>
