@@ -34,7 +34,6 @@ Instead of traditional PID controllers, we train an AI agent in a high-fidelity 
 ## <a name="architecture"></a>🏗️ System Architecture
 
 The system closes the loop between the Physics Environment and the Intelligent Agent.
-
 ```mermaid
 graph TD
     subgraph PyBullet Environment
