@@ -37,24 +37,25 @@ The system closes the loop between the Physics Environment and the Intelligent A
 ```mermaid
 graph LR
     subgraph Simulation Layer
-    A[PyBullet Physics Engine] -->|Raw State| B(Sensors Wrapper)
-    B -->|240x240 RGB| C[Camera Module]
-    B -->|Pos / Vel / Lidar| D[Telemetry Module]
+    A[PyBullet Physics Engine] -->|Raw State| B("Sensors Wrapper")
+    B -->|240x240 RGB| C["Camera Module"]
+    B -->|Pos / Vel / Lidar| D["Telemetry Module"]
     end
 
     subgraph Intelligence Layer
-    C -->|Image Tensor| E[Visual Encoder (CNN)]
-    D -->|Vector Tensor| F[State Encoder (MLP)]
-    E & F -->|Feature Fusion| G{Latent State Representation}
-    G --> H[Actor Policy Head]
-    G --> I[Critic Value Head]
+    C -->|Image Tensor| E["Visual Encoder (CNN)"]
+    D -->|Vector Tensor| F["State Encoder (MLP)"]
+    E -->|Features| G{"Latent State Representation"}
+    F -->|Features| G
+    G --> H["Actor Policy Head"]
+    G --> I["Critic Value Head"]
     end
 
     subgraph Actuation Layer
-    H -->|Continuous Action Vector| J[Motor Controller]
+    H -->|Continuous Action Vector| J["Motor Controller"]
     J -->|Torque & Velocity| A
     end
-    ```
+```
 
 --- 
 ## Autonomous Balancing System: Perception–Action Loop (PPO-Based Control)
