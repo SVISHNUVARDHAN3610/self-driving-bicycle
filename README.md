@@ -1,1 +1,1 @@
-# self-driving-bicycle
+# autonomous self navigating bicycle
