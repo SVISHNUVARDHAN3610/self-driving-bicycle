@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🚲Balancing-and-Navigation-of-a-Bicycle-using-Policy-Gradient-Reinforcement-Learning
+# Balancing-and-Navigation-of-a-Bicycle-using-Policy-Gradient-Reinforcement-Learning
 ### Reinforcement Learning with Multi-Modal Perception
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
@@ -17,15 +17,15 @@
 
 ---
 
-## <a name="overview"></a>🧐 Project Overview
+## <a name="overview"></a>Project Overview
 
 Balancing a bicycle at low speeds is a classic control theory problem due to its inherent instability. This project solves that challenge using **Deep Reinforcement Learning**. 
 
 Instead of traditional PID controllers, we train an AI agent in a high-fidelity **PyBullet** physics environment. The agent controls the steering torque and a **Reaction Pendulum** to maintain stability while navigating toward a target. It utilizes a **Multi-Modal Neural Network** that fuses raw camera feeds with LIDAR sensor data to make decisions.
 
-### 🌟 Key Features
-* **⚖️ Active Balancing:** Uses a reaction mass (pendulum) and steering manipulation to stay upright.
-* **🧠 Hybrid Perception:** Processes **Visual Data** (Camera Feed) and **Telemetry** (Lidar/Velocity) simultaneously.
+###  Key Features
+* ** Active Balancing:** Uses a reaction mass (pendulum) and steering manipulation to stay upright.
+* ** Hybrid Perception:** Processes **Visual Data** (Camera Feed) and **Telemetry** (Lidar/Velocity) simultaneously.
 * **🤖 PPO Algorithm:** Implements Proximal Policy Optimization with an Actor-Critic architecture for stable training.
 * **physics Simulation:** Custom PyBullet environment with realistic gravity, collision, and joint dynamics.
 
@@ -62,7 +62,7 @@ The autonomous bicycle operates using a high-frequency **Perception–Action loo
 
 ---
 
-## 📡 1. Observation
+## 1. Observation
 
 The robot collects information through two synchronized data streams to build a complete understanding of its environment:
 
@@ -80,7 +80,7 @@ These two inputs collectively form the full system state used for decision-makin
 
 ---
 
-## 🧠 2. Decision (Actor Network Outputs)
+## 2. Decision (Actor Network Outputs)
 
 The fused sensory data is passed into the **Actor network**, which generates continuous control signals for the actuator system. The network simultaneously regulates:
 
@@ -168,7 +168,7 @@ To get the simulation running locally, follow these steps to set up the PyBullet
     pip install torch numpy pybullet opencv-python
     ```
 
-3.  **📁 Directory Setup (Crucial)**
+3.  ** Directory Setup (Crucial)**
     The project requires specific directories for assets and model checkpoints. Ensure your folder structure looks like this:
     ```text
     ├── meshes/             # Contains .stl files (Required for URDF)
