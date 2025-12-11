@@ -143,3 +143,49 @@ The telemetry stream provides precise physics state data.
 * **Output:** A single scalar value representing the $Q$-value (quality) of the chosen action in the current state.
 
 ---
+
+## <a name="installation"></a>🚀 Getting Started
+
+To get the simulation running locally, follow these steps to set up the PyBullet environment and Agent dependencies.
+
+### Prerequisites
+
+* **Python 3.8+**
+* **PyTorch** (CUDA support highly recommended for faster PPO training)
+* **PyBullet** (Physics Engine)
+* **OpenCV** (For processing camera feeds)
+
+### Installation
+
+1.  **Clone the repository**
+    ```bash
+    git clone [https://github.com/VishnuVardhan/Self-Balancing-Bicycle.git](https://github.com/VishnuVardhan/Self-Balancing-Bicycle.git)
+    cd Self-Balancing-Bicycle
+    ```
+
+2.  **Install dependencies**
+    ```bash
+    pip install torch numpy pybullet opencv-python
+    ```
+
+3.  **📁 Directory Setup (Crucial)**
+    The project requires specific directories for assets and model checkpoints. Ensure your folder structure looks like this:
+    ```text
+    ├── meshes/             # Contains .stl files (Required for URDF)
+    ├── weights/            # Create this folder if it doesn't exist
+    ├── cycle2.urdf         # Robot definition
+    ├── main.py
+    └── run.py
+    ```
+    *Tip: If the `weights` folder is missing, create it manually to prevent errors during model saving.*
+    ```bash
+    mkdir weights
+    ```
+
+### Usage
+
+**To start the training simulation:**
+Run the entry script. This will launch the PyBullet GUI and initialize the agent.
+
+```bash
+python run.py
