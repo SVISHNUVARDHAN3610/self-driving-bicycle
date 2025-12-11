@@ -260,12 +260,12 @@ We evaluated the agent's performance over **1,000,000 training episodes**. The r
   </tr>
   <tr>
     <td valign="top">
-      <img src="assets/model_architecture.png" alt="Neural Network Diagram" width="100%">
+      <img src="Img-src/self-driving-motorcycle.png" alt="Neural Network Diagram" width="100%">
       <br><br>
       <em>The Multi-Modal Network fusing CNN (Visual) and MLP (Sensor) streams.</em>
     </td>
     <td valign="top">
-      <img src="assets/training_demo.gif" alt="Training Simulation" width="100%">
+      <img src="Img-src/video_20230205_142507.mp4" alt="Training Simulation" width="100%">
       <br><br>
       <em>The agent navigating toward the target while maintaining balance in PyBullet.</em>
     </td>
