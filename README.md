@@ -55,11 +55,40 @@ graph TD
     J --> H
 ```
 
-# The Control Loop
-The autonomous balancing system operates on a high-frequency **Perception-Action loop**. Unlike traditional PID controllers which react to errors, our PPO Agent proactively predicts the optimal torque distribution to maintain stability while navigating.
-1. Observation: The agent receives a 240x240 RGB image from the onboard camera and 16-point sensor data (Lidar distances, orientation, velocity).
-2. Decision: The Actor network outputs continuous control signals for:
-    *Steering Velocity & Force
-    *Rear Wheel Velocity (Throttle)
-    *Pendulum Position (Balancing Mass)
-3. Learning: The Critic evaluates the action's quality, and the PPO algorithm updates the policy based on the reward function (distance to target + stability).
+## Autonomous Balancing System: Perception–Action Loop (PPO Based)
+
+The autonomous balancing system operates on a high-frequency **Perception–Action loop**.  
+Unlike traditional PID controllers that react to errors, the **PPO Agent** proactively predicts optimal torque and control signals to maintain stability while navigating dynamic environments.
+
+### 1. Observation Phase
+The agent receives two types of sensory input:
+
+- **240×240 RGB Image** from the onboard front-facing camera  
+- **16-Dimensional Sensor Vector**, containing:
+  - Lidar distance readings  
+  - Orientation (roll, pitch, yaw)  
+  - Linear and angular velocity  
+
+These inputs are fused to form the state representation.
+
+### 2. Decision Phase (Actor Network Output)
+
+The Actor network generates **continuous control signals** for:
+
+1. **Steering Velocity & Force**  
+2. **Rear Wheel Velocity (Throttle Control)**  
+3. **Pendulum Position Adjustment**  
+   - Controls the **balancing mass** to maintain equilibrium  
+
+The output is optimized to ensure smooth navigation and dynamic stability.
+
+### 3. Learning Phase (Critic + PPO)
+
+- The **Critic network** evaluates the quality of each action by estimating the value function.  
+- The **PPO (Proximal Policy Optimization)** algorithm updates the policy using clipped surrogate objectives.  
+- The reward function is designed to maximize:
+  - Forward progress toward the target  
+  - Stability (reduced oscillation, minimal tilt)  
+  - Smooth control effort  
+
+This creates a robust, self-learning control architecture capable of real-time balancing without manual tuning or PID heuristics.
