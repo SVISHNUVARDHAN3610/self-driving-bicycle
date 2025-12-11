@@ -189,7 +189,7 @@ Run the entry script. This will launch the PyBullet GUI and initialize the agent
 
 ```bash
 python run.py
-
+```
 ## <a name="training"></a>⚙️ Training Configuration
 
 The agent is trained using a custom implementation of **Proximal Policy Optimization (PPO)**. Uniquely, this project utilizes a **Dual-Optimizer Strategy**, applying different learning rates to the Actor (Policy) and Critic (Value) networks to stabilize the learning of complex balancing dynamics.
@@ -264,10 +264,12 @@ We evaluated the agent's performance over **1,000,000 training episodes**. The r
       <br><br>
       <em>The Multi-Modal Network fusing CNN (Visual) and MLP (Sensor) streams.</em>
     </td>
-    <td valign="top">
-      <img src="Img-src/video_20230205_142507.mp4" alt="Training Simulation" width="100%">
-      <br><br>
-      <em>The agent navigating toward the target while maintaining balance in PyBullet.</em>
+    <td valign="top" align="center">
+      <a href="assets/training_demo.mp4">
+        <img src="Img-src/video_20230205_142507.mp4" alt="Click to Watch Video" width="100%">
+      </a>
+      <br>
+      <em>Click the image above to watch the 21MB MP4 training demo.</em>
     </td>
   </tr>
 </table>
