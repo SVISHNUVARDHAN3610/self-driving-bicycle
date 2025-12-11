@@ -1,6 +1,6 @@
 <div align="center">
 
-# Balancing-and-Navigation-of-a-Bicycle-using-Policy-Gradient-Reinforcement-Learning
+# Balancing and Navigation of a Bicycle using Policy Gradient Reinforcement Learning
 ### Reinforcement Learning with Multi-Modal Perception
 
 [![Python](https://img.shields.io/badge/Python-3.8%2B-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
