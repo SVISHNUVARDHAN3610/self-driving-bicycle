@@ -189,3 +189,92 @@ Run the entry script. This will launch the PyBullet GUI and initialize the agent
 
 ```bash
 python run.py
+
+## <a name="training"></a>⚙️ Training Configuration
+
+The agent is trained using a custom implementation of **Proximal Policy Optimization (PPO)**. Uniquely, this project utilizes a **Dual-Optimizer Strategy**, applying different learning rates to the Actor (Policy) and Critic (Value) networks to stabilize the learning of complex balancing dynamics.
+
+### 1. Hyperparameter Table
+
+These values are configured in `main.py` and passed via the `Agent` constructor in `run.py`.
+
+| Parameter | Value | Description |
+| :--- | :---: | :--- |
+| **Total Episodes** | `1,000,000` | Massive training scale to ensure robust policy convergence. |
+| **Steps per Episode** | `350` | Short-horizon episodes to force quick stabilization. |
+| **Actor Learning Rate** | `0.0009` | Aggressive update rate for the policy network. |
+| **Critic Learning Rate** | `0.0005` | Slower update rate for the value estimation network. |
+| **Gamma ($\gamma$)** | `0.99` | Discount factor; high value prioritizes long-term stability over immediate rewards. |
+| **Lambda ($\lambda$)** | `0.95` | GAE (Generalized Advantage Estimation) smoothing factor. |
+| **Batch Size** | `100` | Number of samples collected before a PPO update step. |
+
+### 2. The Training Loop
+
+The training process (defined in `run.py`) follows an **On-Policy** cycle:
+
+1.  **Simulation Sync:** The environment runs in Real-Time mode (`p.setRealTimeSimulation(1)`), meaning the physics engine steps forward automatically, mimicking real-world clock speed.
+2.  **Rollout Collection:**
+    * The agent interacts with the environment for `batch_size` steps (or until the episode ends).
+    * Data tuples `(State, Action, Reward, Next_State, Done)` are stored in the `Buffer`.
+3.  **PPO Update:**
+    * **Advantage Calculation:** Uses GAE to compute how much better an action was compared to the average.
+    * **Ratio Clipping:** The ratio between the new and old policy is clamped ($0.8 - 1.2$) to prevent catastrophic policy collapse.
+    * **Loss Calculation:**
+      $$L = L^{CLIP} - C_1 L^{VF} + C_2 S$$
+      *(Where $L^{CLIP}$ is actor loss, $L^{VF}$ is critic loss, and $S$ is entropy).*
+
+### 3. Reward Function Logic
+
+The agent is driven by a composite reward function calculated in `ENV.py`.
+
+* **Distance Reward:**
+    * **Positive:** If distance to target $\le 5.5$ units.
+    * **Negative:** If distance $> 5.5$ units (Penalizes drifting away).
+* **Stability (Angle) Reward:**
+    * **+5.0:** If tilt is within $\pm 5^\circ$ (Perfectly balanced).
+    * **Scaled:** Decreases linearly as tilt increases up to $\pm 75^\circ$.
+    * **-8.5:** If tilt $> 75^\circ$ (Bike has fallen).
+
+### 4. Hardware Acceleration
+
+The `Agent` class automatically detects CUDA support:
+```python
+self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+```
+## <a name="results"></a>📊 Results & Performance
+
+We evaluated the agent's performance over **1,000,000 training episodes**. The results demonstrate that the PPO algorithm successfully solved the high-dimensional control problem of balancing a bicycle at low speeds.
+
+### 🏆 Key Achievements
+* **Robust Balancing:** Maintained upright stability within $\pm 5^\circ$ for full episode duration.
+* **Navigation:** Achieved **95% success rate** in reaching the R2D2 target.
+* **Convergence:** Actor/Critic networks stabilized after ~600k episodes.
+
+### 🎥 Training Demo & Model Architecture
+
+<table>
+  <tr>
+    <td width="50%" align="center"><b>Hybrid Model Architecture</b></td>
+    <td width="50%" align="center"><b>Real-Time Training Demo</b></td>
+  </tr>
+  <tr>
+    <td valign="top">
+      <img src="assets/model_architecture.png" alt="Neural Network Diagram" width="100%">
+      <br><br>
+      <em>The Multi-Modal Network fusing CNN (Visual) and MLP (Sensor) streams.</em>
+    </td>
+    <td valign="top">
+      <img src="assets/training_demo.gif" alt="Training Simulation" width="100%">
+      <br><br>
+      <em>The agent navigating toward the target while maintaining balance in PyBullet.</em>
+    </td>
+  </tr>
+</table>
+
+### 📈 Training Metrics
+The reward plot below illustrates the learning curve. The sharp upward trend indicates the point where the agent discovered the "pendulum swing" strategy.
+
+<div align="center">
+  <img src="assets/reward_plot.png" alt="PPO Training Reward Curve" width="600">
+</div>
