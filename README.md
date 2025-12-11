@@ -35,25 +35,26 @@ Instead of traditional PID controllers, we train an AI agent in a high-fidelity 
 
 The system closes the loop between the Physics Environment and the Intelligent Agent.
 ```mermaid
-graph TD
-    subgraph PyBullet Environment
-    A[Bicycle Robot] -->|Camera Feed (RGB)| B(Visual Preprocessing)
-    A -->|LIDAR & Velocity| C(Sensor Data)
-    D[Physics Engine] --> A
+graph LR
+    subgraph Simulation Layer
+    A[PyBullet Physics Engine] -->|Raw State| B(Sensors Wrapper)
+    B -->|240x240 RGB| C[Camera Module]
+    B -->|Pos / Vel / Lidar| D[Telemetry Module]
     end
 
-    subgraph PPO Agent
-    B --> E[CNN Layers]
-    C --> F[MLP Layers]
-    E & F --> G{Feature Fusion}
-    G --> H[Actor Network]
-    G --> I[Critic Network]
+    subgraph Intelligence Layer
+    C -->|Image Tensor| E[Visual Encoder (CNN)]
+    D -->|Vector Tensor| F[State Encoder (MLP)]
+    E & F -->|Feature Fusion| G{Latent State Representation}
+    G --> H[Actor Policy Head]
+    G --> I[Critic Value Head]
     end
 
-    H -->|Action: Steer & Pendulum| D
-    I -->|Value Estimate| J[Advantage Calculation]
-    J --> H
-```
+    subgraph Actuation Layer
+    H -->|Continuous Action Vector| J[Motor Controller]
+    J -->|Torque & Velocity| A
+    end
+    ```
 
 --- 
 ## Autonomous Balancing System: Perception–Action Loop (PPO-Based Control)
@@ -277,4 +278,22 @@ We evaluated the agent's performance over **1,000,000 training episodes**. The r
 ### 📈 Training Metrics
 The reward plot below illustrates the learning curve. The sharp upward trend indicates the point where the agent discovered the "pendulum swing" strategy.
 
+---
+## 📫 Connect with Me
+
+I am always open to discussing robotics, reinforcement learning, or new collaboration opportunities.
+
+<div align="center">
+
+[![LinkedIn](https://img.shields.io/badge/linkedin-%230077B5.svg?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/vishnu-vardhan-senapathi)
+[![GitHub](https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white)](https://github.com/VishnuVardhan)
+[![Gmail](https://img.shields.io/badge/Gmail-D14836?style=for-the-badge&logo=gmail&logoColor=white)](mailto:your.email@gmail.com)
+
+</div>
+
+---
+
+<div align="center">
+  <p>If you found this project useful, please consider giving it a ⭐ Star!</p>
+</div>
 
