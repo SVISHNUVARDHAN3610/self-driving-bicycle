@@ -55,36 +55,11 @@ graph TD
     J --> H
 ```
 
-# 🔄 The Control Loop
-
-The autonomous balancing system operates on a high-frequency **Perception-Action loop**. Unlike traditional PID controllers, which react to errors, our PPO Agent proactively predicts the optimal torque distribution to maintain stability while navigating.
-
-## ⚙️ Loop Architecture
-
-The cycle consists of four distinct phases: **Sensing**, **State Fusion**, **Policy Inference**, and **Actuation**.
-
-```mermaid
-graph TD
-    subgraph 1. Perception
-    A[PyBullet Environment] -->|RGB Image (240x240)| B(Camera Module)
-    A -->|Raycast & IMU| C(LIDAR & Telemetry)
-    end
-
-    subgraph 2. State Fusion
-    B --> D[CNN Feature Extractor]
-    C --> E[MLP Feature Extractor]
-    D & E --> F{Latent State Vector}
-    end
-
-    subgraph 3. Policy Inference
-    F --> G[Actor Network]
-    G -->|Softmax/Tanh| H[Action Vector (8-DOF)]
-    end
-
-    subgraph 4. Actuation
-    H --> I[Steering Motor]
-    H --> J[Reaction Pendulum]
-    H --> K[Drive Wheels]
-    I & J & K --> A
-    end
-```
+# The Control Loop
+The autonomous balancing system operates on a high-frequency **Perception-Action loop**. Unlike traditional PID controllers which react to errors, our PPO Agent proactively predicts the optimal torque distribution to maintain stability while navigating.
+1. Observation: The agent receives a 240x240 RGB image from the onboard camera and 16-point sensor data (Lidar distances, orientation, velocity).
+2. Decision: The Actor network outputs continuous control signals for:
+    *Steering Velocity & Force
+    *Rear Wheel Velocity (Throttle)
+    *Pendulum Position (Balancing Mass)
+3. Learning: The Critic evaluates the action's quality, and the PPO algorithm updates the policy based on the reward function (distance to target + stability).
