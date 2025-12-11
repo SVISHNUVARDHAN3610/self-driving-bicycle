@@ -113,3 +113,33 @@ The system improves continuously through Reinforcement Learning:
 This creates a stable, self-learning control strategy capable of autonomous balancing without manual tuning.
 
 ---
+
+## <a name="network"></a>🧠 Neural Network Design
+
+The agent utilizes a **Multi-Modal Actor-Critic architecture** that processes visual data and telemetry simultaneously. The network is split into two distinct feature extractors that fuse into a decision-making head.
+
+### 1. Visual Feature Extractor (CNN)
+The visual stream processes the raw camera feed to understand the environment's horizon and target position.
+* **Input:** $3 \times 512 \times 450$ RGB Image (Reshaped).
+* **Layers:**
+    * `Conv2d` (3 $\to$ 9 filters, kernel=3) + `MaxPool`
+    * `Conv2d` (9 $\to$ 18 filters, kernel=3) + `MaxPool`
+    * `Conv2d` (18 $\to$ 9 filters, kernel=3, stride=2) + `MaxPool`
+    * `Conv2d` (9 $\to$ 3 filters, kernel=3, stride=2) + `MaxPool`
+* **Activation:** Leaky ReLU is used throughout to prevent dead neurons during training.
+
+### 2. Sensor Feature Extractor (MLP)
+The telemetry stream provides precise physics state data.
+* **Input:** 16-dimensional vector (LIDAR rays, Orientation, Velocity).
+* **Layers:** A 7-layer Deep Dense Network ($16 \to 32 \to \dots \to 512 \to \dots \to 16$).
+* **Function:** Extracts high-level physics features such as current tilt velocity and obstacle proximity.
+
+### 3. Actor Head (Policy)
+* **Fusion:** Concatenates the flattened CNN output with the MLP output.
+* **Output:** A continuous vector of **size 7** representing the action space (Steering, Wheel Velocity, Pendulum Force, etc.).
+
+### 4. Critic Head (Value)
+* **Architecture:** Similar fusion strategy but includes the **Action** as an input input alongside state features.
+* **Output:** A single scalar value representing the $Q$-value (quality) of the chosen action in the current state.
+
+---
