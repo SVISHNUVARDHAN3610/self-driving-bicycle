@@ -55,40 +55,61 @@ graph TD
     J --> H
 ```
 
-## Autonomous Balancing System: Perception–Action Loop (PPO Based)
+--- 
+## Autonomous Balancing System: Perception–Action Loop (PPO-Based Control)
 
-The autonomous balancing system operates on a high-frequency **Perception–Action loop**.  
-Unlike traditional PID controllers that react to errors, the **PPO Agent** proactively predicts optimal torque and control signals to maintain stability while navigating dynamic environments.
+The autonomous bicycle operates using a high-frequency **Perception–Action loop**, where decisions are made continuously based on visual and telemetry data. Unlike PID controllers that react to error, the PPO Agent **predicts** optimal actions for stability, navigation, and forward motion.
 
-### 1. Observation Phase
-The agent receives two types of sensory input:
+---
 
-- **240×240 RGB Image** from the onboard front-facing camera  
-- **16-Dimensional Sensor Vector**, containing:
-  - Lidar distance readings  
-  - Orientation (roll, pitch, yaw)  
-  - Linear and angular velocity  
+## 📡 1. Observation
 
-These inputs are fused to form the state representation.
+The robot collects information through two synchronized data streams to build a complete understanding of its environment:
 
-### 2. Decision Phase (Actor Network Output)
+### Visual Input
+- A **240×240 RGB image** from the onboard camera.  
+- Provides perception of the horizon, tilt, obstacles, and relative target position.
 
-The Actor network generates **continuous control signals** for:
+### Telemetry Data
+A **16-dimensional sensor vector**, containing:
+- Lidar distances for real-time obstacle detection  
+- Orientation data (roll, pitch, yaw)  
+- Linear and angular velocity  
 
-1. **Steering Velocity & Force**  
-2. **Rear Wheel Velocity (Throttle Control)**  
-3. **Pendulum Position Adjustment**  
-   - Controls the **balancing mass** to maintain equilibrium  
+These two inputs collectively form the full system state used for decision-making.
 
-The output is optimized to ensure smooth navigation and dynamic stability.
+---
 
-### 3. Learning Phase (Critic + PPO)
+## 🧠 2. Decision (Actor Network Outputs)
 
-- The **Critic network** evaluates the quality of each action by estimating the value function.  
-- The **PPO (Proximal Policy Optimization)** algorithm updates the policy using clipped surrogate objectives.  
-- The reward function is designed to maximize:
-  - Forward progress toward the target  
-  - Stability (reduced oscillation, minimal tilt)  
-  - Smooth control effort  
+The fused sensory data is passed into the **Actor network**, which generates continuous control signals for the actuator system. The network simultaneously regulates:
 
-This creates a robust, self-learning control architecture capable of real-time balancing without manual tuning or PID heuristics.
+### Steering
+- Adjusting steering **velocity** and **force** for directional control.
+
+### Throttle
+- Controlling **rear wheel velocity** to maintain forward momentum.
+
+### Balancing
+- Actively managing the **pendulum position (balancing mass)** to generate counter-torque, ensuring upright stability during motion.
+
+These three control outputs work together to maintain balance and navigate toward the target.
+
+---
+
+## 📈 3. Learning (Critic + PPO Optimization)
+
+The system improves continuously through Reinforcement Learning:
+
+### Evaluation
+- The **Critic network** evaluates the quality of each action by estimating the expected return.
+
+### Optimization
+- The **PPO (Proximal Policy Optimization)** algorithm updates the policy using clipped objective functions.
+- The reward function prioritizes:
+  - Reducing distance to the target  
+  - Maximizing stability (minimizing tilt, wobble, and unwanted oscillation)  
+
+This creates a stable, self-learning control strategy capable of autonomous balancing without manual tuning.
+
+---
